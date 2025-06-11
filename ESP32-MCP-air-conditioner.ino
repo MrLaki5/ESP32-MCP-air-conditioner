@@ -3,26 +3,27 @@
 #include <ArduinoJson.h>
 #include <IRremoteESP8266.h>
 #include <IRsend.h>
-#include <ir_Midea.h>
+#include <ir_Coolix.h>
 
 const char* ssid = "";
 const char* password = "";
 
 WebServer server(80);
-const uint16_t kIrLed = 4;
+const uint16_t kIrLed = 15;
 
 IRsend irsend(kIrLed);
-IRMideaAC ac(kIrLed);
+IRCoolixAC ac(kIrLed);
 
 void sendAC(bool on) {
-  ac.begin();
   if (on) ac.on();
-  else ac.off();
-  ac.setMode(kMideaACCool);
-  ac.setTemp(24);
-  ac.setFan(kMideaACFanAuto);
-  ac.send();
-  Serial.print("Send ac triggered!");
+  else    ac.off();
+
+  ac.setMode(kCoolixCool);    // use Coolix enum directly
+  ac.setTemp(24);                 // 24 °C
+  ac.setFan(kCoolixFanAuto);      // Coolix auto‐fan
+
+  ac.send(); 
+  Serial.println(F("Send AC (Coolix) triggered!"));
 }
 
 void handleRoot() {
@@ -102,12 +103,13 @@ void handleRoot() {
 }
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) delay(500);
   Serial.println(WiFi.localIP());
 
   irsend.begin();
+  ac.begin(); 
 
   server.on("/", handleRoot);
   server.begin();
