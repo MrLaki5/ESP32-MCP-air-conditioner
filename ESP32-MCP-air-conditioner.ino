@@ -15,13 +15,15 @@ IRsend irsend(kIrLed);
 IRCoolixAC ac(kIrLed);
 
 void sendAC(bool on) {
-  if (on) ac.on();
-  else    ac.off();
-
-  ac.setMode(kCoolixCool);    // use Coolix enum directly
-  ac.setTemp(24);                 // 24 °C
-  ac.setFan(kCoolixFanAuto);      // Coolix auto‐fan
-
+  if (on) {
+    ac.on();
+    ac.setMode(kCoolixCool);    // use Coolix enum directly
+    ac.setTemp(24);                 // 24 °C
+    ac.setFan(kCoolixFanAuto);      // Coolix auto‐fan
+  }
+  else {
+    ac.off();
+  }
   ac.send(); 
   Serial.println(F("Send AC (Coolix) triggered!"));
 }
