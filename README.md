@@ -45,3 +45,17 @@ This project implements a Model Context Protocol (MCP) server on an ESP32 MCU, e
 
 - Send commands from your chatbot or MCP client to control the air conditioner.
 - Supported commands typically include power on/off, temperature set, and mode change (customize as needed).
+
+## Circuit Diagram
+
+Below is the circuit diagram for connecting the ESP32 to control the air conditioner:
+
+![Circuit Diagram](assets/circuit.png)
+
+**Explanation:**
+- The circuit uses an ESP32 development board to control the AC.
+- A transistor is used to drive the IR LED or relay, allowing the ESP32 to switch higher currents safely.
+- An IR diode (LED) is used to emit infrared light for controlling the air conditioner via IR signals.
+- The circuit includes a 40Ω resistor (for current limiting to the IR LED or relay) and a 1kΩ resistor (for the transistor base).
+
+Refer to the diagram for exact wiring details.
