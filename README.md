@@ -41,6 +41,17 @@ This project implements a Model Context Protocol (MCP) server on an ESP32 MCU, e
 6. **Power on the ESP32** and ensure it connects to your Wi-Fi network.
 7. **Integrate with your chatbot** or MCP client, pointing it to the ESP32's IP address.
 
+## Setup
+
+Below is an image of the actual hardware setup for this project:
+
+![Hardware Setup](assets/setup.png)
+
+**Description:**
+- This photo shows the assembled circuit connected to the ESP32.
+- The casing is built using LEGO bricks for a simple and customizable enclosure.
+- All components, including the IR LED, resistors, and transistor, are arranged as shown in the circuit diagram.
+
 ## Usage
 
 - Send commands from your chatbot or MCP client to control the air conditioner.
