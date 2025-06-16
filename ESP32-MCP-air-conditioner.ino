@@ -14,12 +14,12 @@ const uint16_t kIrLed = 15;
 IRsend irsend(kIrLed);
 IRCoolixAC ac(kIrLed);
 
-void sendAC(bool on) {
+void sendAC(bool on, int temp = 24) {
   if (on) {
     ac.on();
-    ac.setMode(kCoolixCool);    // use Coolix enum directly
-    ac.setTemp(24);                 // 24 °C
-    ac.setFan(kCoolixFanAuto);      // Coolix auto‐fan
+    ac.setMode(kCoolixCool);    // Use Coolix enum directly
+    ac.setTemp(temp);           // Set temperature
+    ac.setFan(kCoolixFanAuto);  // Coolix auto‐fan
   }
   else {
     ac.off();
@@ -69,15 +69,24 @@ void handleRoot() {
     JsonArray tools = res["result"].createNestedArray("tools");
     JsonObject tool = tools.createNestedObject();
     tool["name"] = "toggle_aircondition";
-    tool["description"] = "Turns the air conditioner on or off";
+    tool["description"] = "Toggle the air conditioner state and set the temperature";
     JsonObject inputSchema = tool.createNestedObject("inputSchema");
     inputSchema["type"] = "object";
+    // State property
     inputSchema["properties"]["state"]["type"] = "string";
     JsonArray enumArr = inputSchema["properties"]["state"].createNestedArray("enum");
     enumArr.add("on");
     enumArr.add("off");
     JsonArray required = inputSchema.createNestedArray("required");
     required.add("state");
+    inputSchema["properties"]["state"]["description"] = "State of the air conditioner, either 'on' or 'off'";
+    // Temperature property
+    inputSchema["properties"]["temperature"]["type"] = "number";
+    inputSchema["properties"]["temperature"]["minimum"] = 17;
+    inputSchema["properties"]["temperature"]["maximum"] = 30;
+    inputSchema["properties"]["temperature"]["default"] = 24;
+    inputSchema["properties"]["temperature"]["description"] = "Temperature in degrees Celsius, use the default value if not specified";
+
     inputSchema["additionalProperties"] = false;
     inputSchema["$schema"] = "http://json-schema.org/draft-07/schema#";
     JsonObject annotations = tool.createNestedObject("annotations");
@@ -90,8 +99,9 @@ void handleRoot() {
     Serial.println(toolName);
     if (toolName == "toggle_aircondition") {
       String state = req["params"]["arguments"]["state"].as<String>();
+      int temperature = req["params"]["arguments"]["temperature"].as<int>();
       bool state_b = state == "on";
-      sendAC(state_b);
+      sendAC(state_b, temperature);
       JsonArray content = res["result"].createNestedArray("content");
       JsonObject content_1 = content.createNestedObject();
       content_1["type"] = "text";
