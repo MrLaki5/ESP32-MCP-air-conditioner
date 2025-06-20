@@ -1,6 +1,6 @@
 # ESP32-MCP-air-conditioner
 
-Turn your Air Conditioner on/off and control it from a Chatbot application using this MCP server running on an ESP32 microcontroller.
+Turn your Air Conditioner on/off and control it (temperature) from a Chatbot application using this MCP server running on an ESP32 microcontroller.
 
 [!](https://github.com/user-attachments/assets/1218c517-bfdc-407c-82f9-809421ac7438)
 
